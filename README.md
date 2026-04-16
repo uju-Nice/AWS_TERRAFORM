@@ -1,9 +1,37 @@
 Provision and deploy Infrastructure in aws cloud
-N/B: Authenticate to aws by setting up aws secret key and access key with a). export ENV_VAR b). via github c). using identity provider OIDC
-N/B: use modules either aws modules or github tag version ref modules in github 
-1. Server (EC2 instance) and use terraform function to add 3 more ec2 instance
-2. Deploy storage
-3. Deploy network (VPC and its componenets)
-4. Deploy EKS cluster and worker nodes
-5. Deploy IAM group
-6. Ensure you delete after deployment using terraform destroy
+N/B:Use the below options to Authenticate to aws by setting up aws secret key and access key with 
+a. export ENVIRONEMENT_VARIABLE ( for testing purposes ONLY in the CLI, Not recomended)
+
+
+Call any module you want using the tag version as ref instead of repeating it.
+
+REPO - environment folder ( dev.tfvars, staging.tfvars, production.tfvars )
+REPO - (main.tf, variable.tf, output.tf, provider.tf) any other files in here.
+
+AUTHENTICATION ON CLI 
+configure aws
+% export AWS_ACCESS_KEY_ID="anaccesskey"
+% export AWS_SECRET_ACCESS_KEY="asecretkey"
+% export AWS_REGION="us-west-2"
+
+terraform init
+terraform plan
+terraform apply 
+terraform destroy
+
+Specific environment
+terraform apply -var-file="dev.tfvars"
+terraform apply -var-file="staging.tfvars"
+terraform apply -var-file="prod.tfvars"
+
+What Actually Changes Between Environments (Typical differences)
+
+instance sizes
+number of resources
+vpc CIDR ranges
+scaling configs
+
+Ex:
+instance_count = 1   # dev
+instance_count = 1    # staging
+instance_count = 3   # prod
