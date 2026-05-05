@@ -21,10 +21,6 @@ output "instance_id" {
   value = aws_instance.example.id
 }   
 
-output "vpc_id" {
-  value = module.vpc.vpc_id
-}   
-
 output "bucket_id" {
     description = "The ID of the S3 bucket"
     value = aws_s3_bucket.nickos_bucket.id
