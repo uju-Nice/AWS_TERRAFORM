@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
-    bucket         = "my-tf-state-prod"
-    key            = "nickos/terraform.tfstate"
+    bucket         = "nickos-s3-bucket"
+    key            = "dev/terraform.tfstate"
     region         = "eu-west-2"
     dynamodb_table = "terraform-locks"
     encrypt        = true
@@ -10,7 +10,7 @@ terraform {
 
 //terraform {
 // backend "s3" {
-//  bucket         = "your-state-bucket-name"
+//  bucket         = "your-bucket-name"
 //  key            = "/terraform.tfstate-file-name"
 //  region         = "us-east-1"
 //  dynamodb_table = "terraform-locks"

@@ -1,8 +1,9 @@
-
-vpc_cidr_range = "10.0.0.0/16"
-public_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
-private_subnets = ["10.0.3.0/24", "10.0.4.0/24"]
-AvailabilityZones = ["us-east-1a", "us-east-1b", "us-east-1c"]  
+aws_region = "eu-west-2" # London region
+# vpc_id = "vpc-0c615b712733014b4"
+vpc_cidr_range = "172.31.0.0/16"
+public_subnets = ["172.31.16.0/20", "172.31.17.0/20"]
+private_subnets = ["172.31.18.0/20", "172.31.19.0/20"]
+AvailabilityZones = ["eu-west-2a", "eu-west-2b", "eu-west-2c"]  
 environment   = "dev"
 instance_type = "t3.micro"
-ami_id       = var.ami_id   
+ami_id       = ami-0d114020bf27f27cf 
