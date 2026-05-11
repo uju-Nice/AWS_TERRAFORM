@@ -1,0 +1,96 @@
+name: Terraform CI/CD
+
+on:
+  # schedule:
+  #   - cron: '0 14 * * *'     # Cron job to run at 2:00 PM UTC every day
+
+  # pull_request:
+  #   branches:
+  #     - main
+
+  push:
+    branches:
+      - main
+
+env:
+  TF_VERSION: 1.8.5
+  WORKING_DIR: ./terraform
+
+jobs:
+  terraform-plan:  # Plan job runs on both PRs and on any push
+    runs-on: ubuntu-latest
+    # runs-on: self-hosted  #  picks any self-hosted runner (repo → Settings → Actions → Runners)
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIR }}
+
+    steps:
+      # - name: Checkout code
+      #   uses: actions/checkout@v4
+
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET }}
+          aws-region: eu-west-2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Format Check
+        run: terraform fmt -check
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+
+  terraform-apply:   # Separate job for apply, triggered only on push to main
+    needs: terraform-plan
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIR }}
+
+    environment:
+      name: production
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # - name: Download Plan
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: tfplan
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve 
+
+
+
+
+   
+# jobs:
+#   deploy:
+#     runs-on: self-hosted   #  picks any self-hosted runner
+#     # OR specific label: runs-on: [self-hosted, linux, terraform]
+#     permissions:
+#       id-token: write            #  allows OIDC token generation 
+#       contents: read
+#     steps:
+#       - uses: actions/checkout@v4
+#       - name: Configure AWS OIDC
+#         uses: aws-actions/configure-aws-credentials@v4
+#         with:
+#           role-to-assume: arn:aws:iam::123456789012:role/github-actions-deploy
+#           aws-region: eu-west-2
+#       - run: terraform init
+#       - run: terraform workspace select dev
+#       - run: terraform apply -auto-approve
