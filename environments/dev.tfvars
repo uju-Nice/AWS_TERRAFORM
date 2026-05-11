@@ -1,0 +1,9 @@
+aws_region = "eu-west-2" # London region
+# vpc_id = "vpc-0c615b712733014b4"
+vpc_cidr_range = "172.31.0.0/16"
+public_subnets = ["172.31.16.0/20", "172.31.17.0/20"]
+private_subnets = ["172.31.18.0/20", "172.31.19.0/20"]
+AvailabilityZones = ["eu-west-2a", "eu-west-2b", "eu-west-2c"]  
+environment   = "dev"
+instance_type = "t3.micro"
+ami_id       = ami-0d114020bf27f27cf 
