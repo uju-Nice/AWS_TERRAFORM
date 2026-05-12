@@ -48,7 +48,7 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan
+        run: terraform plan 
 
   terraform-apply:   # Separate job for apply, triggered only on push to main
     needs: terraform-plan
