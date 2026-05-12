@@ -37,8 +37,6 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: ${{ env.TF_VERSION }}
 
       - name: Terraform Init
         run: terraform init
@@ -55,9 +53,9 @@ jobs:
   terraform-apply:   # Separate job for apply, triggered only on push to main
     needs: terraform-plan
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ env.WORKING_DIR }}
+    # defaults:
+    #   run:
+    #     working-directory: ${{ env.WORKING_DIR }}
 
     environment:
       name: production
