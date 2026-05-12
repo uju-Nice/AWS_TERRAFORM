@@ -22,7 +22,7 @@ export AWS_SECRET_ACCESS_KEY="asecretkey"
 export AWS_REGION="us-west-2"
 
 terraform init   .........  # downloads AWS provider
-terraform plan    ......... # preview changes
+terraform plan -out=tfplan  ......... # preview changes
 terraform apply  .......  # create/update resources
 terraform destroy ...... # delete everything
 

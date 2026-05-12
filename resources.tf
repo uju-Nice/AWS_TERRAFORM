@@ -37,7 +37,6 @@ resource "aws_subnet" "public_subnet" {
   }
 }
 
-
 # ------------------------------
 # 3. Internet Gateway
 # ------------------------------
