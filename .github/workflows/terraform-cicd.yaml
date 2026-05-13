@@ -5,7 +5,7 @@ on:
   #   - cron: '0 14 * * *'     # Cron job to run at 2:00 PM UTC every day
   push:
     branches: [ main, dev ]
-    workflow_dispatch: # Allows manual triggering of the workflow from the GitHub Actions tab
+    # workflow_dispatch: # Allows manual triggering of the workflow from the GitHub Actions tab - ONLY MANUAL TRIGGER — no auto-run!
 
 env:
   AWS_REGION: eu-west-2
@@ -54,7 +54,7 @@ jobs:
             -parallelism=40 \
             -refresh=false \
             -out=tfplan \
-            -var-file=environments/${{ env.TF_WORKSPACE }}.tfvars  
+            -var-file=environments/${{ TF_WORKSPACE }}.tfvars  
         # run: terraform plan 
 
   terraform-apply:   # Separate job for apply, triggered only on push to main
@@ -82,8 +82,13 @@ jobs:
             -refresh=true \
             -auto-approve \
             -var-file=environments/${{ env.TF_WORKSPACE }}.tfvars
-        
-        # run: terraform apply -auto-approve 
+
+      # - name: Terraform Destroy
+      #   if: github.ref == 'refs/heads/dev' 
+      #   run: |
+      #     terraform destroy \
+      #     -parallelism=40 \
+      #     -var-file=environments/dev.tfvars
 
 
 
