@@ -4,7 +4,7 @@ on:
   # schedule:
   #   - cron: '0 14 * * *'     # Cron job to run at 2:00 PM UTC every day
   push:
-    branches: [ main, dev ]
+    branches: [ main]
     # branches: 
       # - main
       # - dev
