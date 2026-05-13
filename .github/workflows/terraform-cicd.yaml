@@ -78,7 +78,7 @@ jobs:
           name: tfplan
 
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/main'
+        # if: github.ref == 'refs/heads/main'
         run: |
           terraform apply \
             -parallelism=40 \
