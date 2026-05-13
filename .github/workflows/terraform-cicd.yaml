@@ -1,10 +1,13 @@
-name: Terraform CI/CD
+name: Terraform CI/CD Pipeline
 
 on:
   # schedule:
   #   - cron: '0 14 * * *'     # Cron job to run at 2:00 PM UTC every day
   push:
     branches: [ main, dev ]
+    # branches: 
+      # - main
+      # - dev
     # workflow_dispatch: # Allows manual triggering of the workflow from the GitHub Actions tab - ONLY MANUAL TRIGGER — no auto-run!
 
 env:
@@ -54,7 +57,7 @@ jobs:
             -parallelism=40 \
             -refresh=false \
             -out=tfplan \
-            -var-file=environments/${{ TF_WORKSPACE }}.tfvars  
+            -var-file=environments/${{ env.TF_WORKSPACE }}.tfvars  
         # run: terraform plan 
 
   terraform-apply:   # Separate job for apply, triggered only on push to main
