@@ -24,9 +24,9 @@ jobs:
   terraform-plan:  # Plan job runs on both PRs and on any push
     runs-on: ubuntu-latest-8-cores
     # runs-on: self-hosted  #  picks any self-hosted runner (repo → Settings → Actions → Runners)
-    # defaults:
-    #   run:
-    #     working-directory: ${{ env.WORKING_DIR }}
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIR }}
 
     steps:
       - name: Checkout code
