@@ -14,7 +14,7 @@ env:
   AWS_REGION: eu-west-2
   TF_VERSION: "1.15.1"
   TF_WORKSPACE: dev
-  WORKING_DIR: 
+ 
 
   # push:
   #   branches:
@@ -24,9 +24,6 @@ jobs:
   terraform-plan:  # Plan job runs on both PRs and on any push
     runs-on: ubuntu-latest
     # runs-on: self-hosted  #  picks any self-hosted runner (repo → Settings → Actions → Runners)
-    defaults:
-      run:
-        working-directory: ${{ env.WORKING_DIR }}
 
     steps:
       - name: Checkout code
@@ -63,9 +60,6 @@ jobs:
   terraform-apply:   # Separate job for apply, triggered only on push to main
     needs: terraform-plan
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ env.WORKING_DIR }}
     environment:
       name: production
 
