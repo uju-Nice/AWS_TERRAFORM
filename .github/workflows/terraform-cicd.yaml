@@ -29,13 +29,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+        # Authenticate to AWS
       - name: Configure AWS
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-          aws-region: eu-west-2
+          aws-region: ${{ env.AWS_REGION }} 
 
+       # Setup Terraform
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
@@ -58,16 +60,35 @@ jobs:
         # run: terraform plan 
 
   terraform-apply:   # Separate job for apply, triggered only on push to main
-    needs: terraform-plan
+    needs: terraform-plan    #  Only runs this job AFTER plan succeeds
     runs-on: ubuntu-latest
     environment:
       name: production
+  
+  # THIS ADDS APPROVAL STEP BEFORE APPLYING TO PRODUCTION
+    if: github.ref == 'refs/heads/main'  # Only run apply on main
+    environment:
+      name: ${{ inputs.environment || github.ref_name }}  # Optional: only allow from main branch
 
     steps:
       - uses: actions/checkout@v4
 
+
+      # Authenticate to AWS again for the Apply job
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: ${{ env.AWS_REGION }} 
+
+      # Setup Terraform
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      # APPLY — ONLY AFTER APPROVAL
       - name: Terraform Apply
-        # if: github.ref == 'refs/heads/main'
         run: |
           terraform apply \
             -parallelism=40 \
