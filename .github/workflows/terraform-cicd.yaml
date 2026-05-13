@@ -66,11 +66,12 @@ jobs:
       name: production
   
   # THIS ADDS APPROVAL STEP BEFORE APPLYING TO PRODUCTION
+  environment:
+    name: prod
     if: github.ref == 'refs/heads/main'  # Only run apply on main
 
     steps:
       - uses: actions/checkout@v4
-
 
       # Authenticate to AWS again for the Apply job
       - name: Configure AWS
