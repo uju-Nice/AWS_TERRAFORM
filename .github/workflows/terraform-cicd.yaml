@@ -67,8 +67,6 @@ jobs:
   
   # THIS ADDS APPROVAL STEP BEFORE APPLYING TO PRODUCTION
     if: github.ref == 'refs/heads/main'  # Only run apply on main
-    environment:
-      name: ${{ inputs.environment || github.ref_name }}  # Optional: only allow from main branch
 
     steps:
       - uses: actions/checkout@v4
