@@ -56,7 +56,7 @@ jobs:
             -parallelism=40 \
             -refresh=false \
             -out=tfplan \
-            -var-file=environments/${{ env.TF_WORKSPACE }}.tfvars  
+       # -var-file=environments/${{ env.TF_WORKSPACE }}.tfvars  
         # run: terraform plan 
 
   terraform-apply:   # Separate job for apply, triggered only on push to main
@@ -67,7 +67,7 @@ jobs:
   
   # THIS ADDS APPROVAL STEP BEFORE APPLYING TO PRODUCTION
     if: github.ref == 'refs/heads/main'  # Only run apply on main branch
-    
+
     steps:
       - uses: actions/checkout@v4
 
